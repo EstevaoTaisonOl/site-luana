@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
-import webPush from 'web-push';
 export async function GET(req, { params }) {
     try {
         const { token } = params;
-
-        const vapidKeys = webPush.generateVAPIDKeys();
-        console.log(vapidKeys);
 
         if (!token) {
             return NextResponse.json(

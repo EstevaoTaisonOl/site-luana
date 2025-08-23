@@ -8,19 +8,19 @@ import { useEffect } from "react";
 export default function page() {
     const params = useParams()
     const uuid = params.id
-    const publicVapidKey = 'BAxbC_u-layOPqjj3PoS4uzWDOStCoKmGSD4oi8-HhWBOvNziNsfSmLA1IJqEnXlyJoOfylc6ZzxInOhrR1ClPQ';
+    const publicVapidKey = 'BLtWkX8Fu-PBJZWkl8bvyyPB9RZi1K-lM_-LRv5AQeOXPnltPf_YNmzMZ2DKEeZMh3Jk9QGXXOzPZ2ZJ6A1DgAI';
 
-    function solicitarPermissao() {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                console.log('Permissão concedida para notificações!');
-            } else {
-                console.log('Permissão negada para notificações!');
-            }
-        });
-    }
-
-    solicitarPermissao();
+    useEffect(() => {
+        if ('Notification' in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    console.log('Permissão concedida!');
+                } else {
+                    console.log('Permissão negada!');
+                }
+            });
+        }
+    }, []);
 
     async function subscribeUser(uuid) {
         const registration = await navigator.serviceWorker.register('/sw.js');
@@ -95,6 +95,22 @@ export default function page() {
         };
 
         checkToken();
+        async function enviarNotificacao(uuid, titulo, mensagem) {
+            const response = await fetch('/api/send-notification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uuid: uuid,      // o ID do usuário que você quer notificar
+                    title: titulo,   // título da notificação
+                    body: mensagem   // mensagem da notificação
+                })
+            });
+
+            const data = await response.json();
+            console.log(data); // { message: "Notificação enviada!" }
+        }
+        enviarNotificacao(uuid, "Bem-vindo ao Mural!", "Você está pronto para interagir com o mural.")
+
     }, []);
 
 
