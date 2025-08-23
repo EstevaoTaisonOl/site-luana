@@ -95,22 +95,23 @@ export default function page() {
         };
 
         checkToken();
-        async function enviarNotificacao(uuid, titulo, mensagem) {
-            const response = await fetch('/api/send-notification', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    uuid: uuid,      // o ID do usuário que você quer notificar
-                    title: titulo,   // título da notificação
-                    body: mensagem   // mensagem da notificação
-                })
-            });
-
-            const data = await response.json();
-            console.log(data); // { message: "Notificação enviada!" }
-        }
 
     }, []);
+
+    async function enviarNotificacao(uuid, titulo, mensagem) {
+        const response = await fetch('/api/send-notification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                uuid: uuid,      // o ID do usuário que você quer notificar
+                title: titulo,   // título da notificação
+                body: mensagem   // mensagem da notificação
+            })
+        });
+
+        const data = await response.json();
+        console.log(data); // { message: "Notificação enviada!" }
+    }
 
 
     return (
@@ -198,7 +199,7 @@ export default function page() {
                     </Button>
                 </nav>
             </header>
-            <Mural uuid={uuid} enviarNotificacao={enviarNotificacao}/>
+            <Mural uuid={uuid} enviarNotificacao={enviarNotificacao} />
         </div>
     )
 }
