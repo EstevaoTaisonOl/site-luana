@@ -12,17 +12,19 @@ webPush.setVapidDetails(
 );
 
 export async function POST(req) {
-    const { title, body, uuid } = await req.json();
+    const { title, uuid } = await req.json();
 
     // Conecta ao MongoDB
     const client = await clientPromise;
     const db = client.db('siteLuana');
 
-    // Busca todas as subscriptions do usuário
+    // Busca todas as subscriptions, exceto do usuário que enviou
     const userSubs = await db
         .collection('subscriptions')
         .find({ uuid: { $ne: uuid } })
         .toArray();
+
+    // Busca o usuário que enviou
     const user = await db.collection('users').findOne({ uuid });
 
     if (!user) {
@@ -32,13 +34,22 @@ export async function POST(req) {
         });
     }
 
-    body = `${user.name} Te enviou um cartao do amor!!!!!`
+    // Corpo e URL da notificação
+    const messageBody = `${user.name} te enviou um cartão do amor! ❤️`;
+    const notificationUrl = `/${user.uuid}`;
 
     // Envia a notificação para cada subscription
     await Promise.all(
         userSubs.map(sub =>
-            webPush.sendNotification(sub.subscription, JSON.stringify({ title, body, icon: '/icon.png' }))
-                .catch(err => console.error('Erro ao enviar notificação:', err))
+            webPush.sendNotification(
+                sub.subscription,
+                JSON.stringify({
+                    title,
+                    body: messageBody,
+                    icon: '/icon.png',
+                    url: notificationUrl // adiciona a URL que será aberta ao clicar
+                })
+            ).catch(err => console.error('Erro ao enviar notificação:', err))
         )
     );
 

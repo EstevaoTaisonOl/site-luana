@@ -82,7 +82,7 @@ export default function Mural({ uuid, enviarNotificacao}) {
 
             // Aqui sim você pega os cards retornados da API
             setCards(data.cards);
-            enviarNotificacao(uuid, "Novo Cartão de Amor!", ``)
+            enviarNotificacao(uuid, "Novo Cartão de Amor!", ``, 'https://site-luana-eight.vercel.app')
         } catch (error) {
             console.error("Erro ao criar cartão:", error);
         }
