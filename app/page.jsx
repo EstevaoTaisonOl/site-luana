@@ -178,7 +178,7 @@ export default function AuthPage() {
                 <Heart className="h-8 w-8 text-primary fill-current" />
               </div>
             </div>
-            <h1 className="text-6xl font-bold text-foreground mb-2">Bem-vindos</h1>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Bem-vindos</h1>
             <p className="text-muted-foreground">Entre na sua conta ou crie uma nova para continuar</p>
           </div>
 

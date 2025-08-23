@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
-export async function GET(req, { params }) {
+export async function GET(req, context) {
     try {
-        const { token } = params;
+        const { token } = await context.params;
 
         if (!token) {
             return NextResponse.json(

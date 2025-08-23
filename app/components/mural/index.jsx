@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Palette, Square, Type } from "lucide-react"; // ou de onde for seu ícone
 import Card from "@/app/components/card";
 
-export default function Mural({ uuid, enviarNotificacao}) {
+export default function Mural({ uuid, enviarNotificacao, index}) {
     const [isCreating, setIsCreating] = useState(false)
     const [selectedColor, setSelectedColor] = useState("bg-pink-200")
     const [selectedSize, setSelectedSize] = useState("large")
@@ -80,8 +80,6 @@ export default function Mural({ uuid, enviarNotificacao}) {
                 throw new Error(data.error || 'Erro ao criar cartão');
             }
 
-            // Aqui sim você pega os cards retornados da API
-            setCards(data.cards);
             enviarNotificacao(uuid, "Novo Cartão de Amor!", ``, 'https://site-luana-eight.vercel.app')
         } catch (error) {
             console.error("Erro ao criar cartão:", error);
@@ -109,7 +107,8 @@ export default function Mural({ uuid, enviarNotificacao}) {
             }
             console.log("Editando:", edit)
             if (edit) return;
-            setCards(data.cards);
+            var cardsReverse = data.cards.reverse();
+            setCards(cardsReverse);
         };
 
         eventSource.onerror = (err) => {
@@ -121,6 +120,15 @@ export default function Mural({ uuid, enviarNotificacao}) {
             eventSource.close();
         };
     }, [cards]);
+
+    useEffect(() => {
+        const fetchCards = async () => {
+            var cards = await fetch('/api/card').then(res => res.json()).then(data => data.cards.reverse());
+            setCards(cards);
+
+        }
+        fetchCards()
+    }, [index])
 
 
     const finishEditing = async (cardAtualizado) => {
@@ -304,41 +312,43 @@ export default function Mural({ uuid, enviarNotificacao}) {
                     </div>
                 </div>
             )}
-            {
-                cards.map((card, index) => (
-                    <Card
-                        key={card._id}
-                        card={card}
-                        fontSizeConfig={fontSizeConfig}
-                        sizeConfig={sizeConfig}
-                        getStyleEmoji={getStyleEmoji}
-                        toggleEdit={() => {
-                            setCards(cards.map(c => c._id === card._id ? { ...c, isEditing: !c.isEditing } : c));
-                        }}
-                        deleteCard={() => {
-                            setCards(cards.filter(c => c._id !== card._id));
-                        }}
-                        updateCard={(id,field, value) => {
-                            console.log(field, value, card._id, card.uuid, uuid)
-                            setCards(cards.map(c => c._id === card._id ? { ...c, [field]: value } : c));
-                        }}
-                        finishEditing={(id) => {
-                            for(var i = 0 ; i < cards.length; i++){
-                                if(cards[i].isEditing){
-                                    if(cards[i]._id !== card._id) return;
-                                    console.log("Atualizando card:", cards[i]);
-                                    var newCard = cards[i];
-                                    newCard.isEditing = false;
-                                    finishEditing(newCard);
+            <div className="flex flex-col gap-2 overflow-y-scroll simple-scroll">
+                {
+                    cards.map((card, index) => (
+                        <Card
+                            key={card._id}
+                            card={card}
+                            fontSizeConfig={fontSizeConfig}
+                            sizeConfig={sizeConfig}
+                            getStyleEmoji={getStyleEmoji}
+                            toggleEdit={() => {
+                                setCards(cards.map(c => c._id === card._id ? { ...c, isEditing: !c.isEditing } : c));
+                            }}
+                            deleteCard={() => {
+                                setCards(cards.filter(c => c._id !== card._id));
+                            }}
+                            updateCard={(id, field, value) => {
+                                console.log(field, value, card._id, card.uuid, uuid)
+                                setCards(cards.map(c => c._id === card._id ? { ...c, [field]: value } : c));
+                            }}
+                            finishEditing={(id) => {
+                                for (var i = 0; i < cards.length; i++) {
+                                    if (cards[i].isEditing) {
+                                        if (cards[i]._id !== card._id) return;
+                                        console.log("Atualizando card:", cards[i]);
+                                        var newCard = cards[i];
+                                        newCard.isEditing = false;
+                                        finishEditing(newCard);
+                                    }
                                 }
-                            }
-                            setCards(cards.map(c => c.id === id ? { ...c, isEditing: false } : c));
-                        }}
-                        uuid={card.uuid}
-                        uuidUser={uuid}
-                    />
-                ))
-            }
+                                setCards(cards.map(c => c.id === id ? { ...c, isEditing: false } : c));
+                            }}
+                            uuid={card.uuid}
+                            uuidUser={uuid}
+                        />
+                    ))
+                }
+            </div>
         </>
     );
 }

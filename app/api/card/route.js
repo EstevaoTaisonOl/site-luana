@@ -82,3 +82,11 @@ export async function PUT(request){
 
     return Response.json({ message: "Cartão atualizado com sucesso!", cards}, { status: 200 });
 }
+
+export async function GET(){
+    const client = await clientPromise;
+    const db = client.db("siteLuana"); // nome do seu banco
+    const cardsCollection = db.collection("cards");
+    const cards = await cardsCollection.find().toArray();
+    return Response.json({ cards}, { status: 200 });
+}
