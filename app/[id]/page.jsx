@@ -8,15 +8,7 @@ import { useEffect } from "react";
 export default function page() {
     const params = useParams()
     const uuid = params.id
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('Service Worker registrado com sucesso:', registration);
-            })
-            .catch(error => {
-                console.error('Falha ao registrar Service Worker:', error);
-            });
-    }
+    const publicVapidKey = 'BAxbC_u-layOPqjj3PoS4uzWDOStCoKmGSD4oi8-HhWBOvNziNsfSmLA1IJqEnXlyJoOfylc6ZzxInOhrR1ClPQ';
 
     function solicitarPermissao() {
         Notification.requestPermission().then(permission => {
@@ -30,14 +22,36 @@ export default function page() {
 
     solicitarPermissao();
 
-    navigator.serviceWorker.ready.then(registration => {
-        registration.showNotification('Título da Notificação', {
-            body: 'Esta é a mensagem da notificação!',
-            icon: '/icon.png',
-            vibrate: [200, 100, 200],
-            tag: 'notificacao-exemplo'
+    async function subscribeUser(uuid) {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
         });
-    });
+
+        // Envia subscription para o backend
+        await fetch(`/api/subscribe/${uuid}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subscription })
+        });
+
+        console.log('Usuário inscrito para push notifications!');
+    }
+
+    // Exemplo de uso
+    useEffect(() => {
+        subscribeUser(uuid);
+    }, []);
+
+    // Função auxiliar para converter chave VAPID
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+        const rawData = window.atob(base64);
+        return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+    }
 
     useEffect(() => {
         var responnse = fetch(`/api/users/${uuid}`)
