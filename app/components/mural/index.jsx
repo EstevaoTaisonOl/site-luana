@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Palette, Square, Type } from "lucide-react"; // ou de onde for seu ícone
 import Card from "@/app/components/card";
 
-export default function Mural({ uuid }) {
+export default function Mural({ uuid, enviarNotificacao}) {
     const [isCreating, setIsCreating] = useState(false)
     const [selectedColor, setSelectedColor] = useState("bg-pink-200")
     const [selectedSize, setSelectedSize] = useState("large")
@@ -82,7 +82,7 @@ export default function Mural({ uuid }) {
 
             // Aqui sim você pega os cards retornados da API
             setCards(data.cards);
-
+            enviarNotificacao(uuid, "Novo Cartão de Amor!", ``)
         } catch (error) {
             console.error("Erro ao criar cartão:", error);
         }

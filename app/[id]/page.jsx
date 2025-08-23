@@ -109,7 +109,6 @@ export default function page() {
             const data = await response.json();
             console.log(data); // { message: "Notificação enviada!" }
         }
-        enviarNotificacao(uuid, "Bem-vindo ao Mural!", "Você está pronto para interagir com o mural.")
 
     }, []);
 
@@ -199,7 +198,7 @@ export default function page() {
                     </Button>
                 </nav>
             </header>
-            <Mural uuid={uuid} />
+            <Mural uuid={uuid} enviarNotificacao={enviarNotificacao}/>
         </div>
     )
 }

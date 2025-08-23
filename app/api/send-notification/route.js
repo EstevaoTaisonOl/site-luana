@@ -19,7 +19,20 @@ export async function POST(req) {
     const db = client.db('siteLuana');
 
     // Busca todas as subscriptions do usuário
-    const userSubs = await db.collection('subscriptions').find().toArray();
+    const userSubs = await db
+        .collection('subscriptions')
+        .find({ uuid: { $ne: uuid } })
+        .toArray();
+    const user = await db.collection('users').findOne({ uuid });
+
+    if (!user) {
+        return new Response(JSON.stringify({ error: 'Usuário não encontrado.' }), {
+            status: 404,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    body = `${user.name} Te enviou um cartao do amor!!!!!`
 
     // Envia a notificação para cada subscription
     await Promise.all(

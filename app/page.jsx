@@ -69,7 +69,7 @@ export default function AuthPage() {
       if (response.ok) {
         setModal(true)
         localStorage.setItem("token", data.token)
-        router.push(`/${data.uuid}}`)
+        router.push(`/${data.uuid}`)
       }
       setIsLoading(false)
     } catch (error) {
