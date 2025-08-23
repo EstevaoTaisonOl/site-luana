@@ -1,6 +1,5 @@
 import webPush from 'web-push';
 
-let subscriptions = []; // Salvar em memória (ou DB em produção)
 
 const publicVapidKey = 'BLtWkX8Fu-PBJZWkl8bvyyPB9RZi1K-lM_-LRv5AQeOXPnltPf_YNmzMZ2DKEeZMh3Jk9QGXXOzPZ2ZJ6A1DgAI';
 const privateVapidKey = 'JXwmvSd_ed6klbJbD9C5crTJpcBy76Vf5ls0SSzlYkk';
@@ -11,18 +10,25 @@ webPush.setVapidDetails(
     privateVapidKey
 );
 
-export async function POST(request, { params }) {
+import clientPromise from '@/lib/mongodb'; // sua conexão com o MongoDB
+
+export async function POST(req, { params }) {
     const { uuid } = params;
-    const body = await request.json();
+    const body = await req.json();
     const subscription = body.subscription;
 
-    subscriptions.push({ uuid, subscription });
-    console.log('Subscription adicionada:', subscription);
+    const client = await clientPromise;
+    const db = client.db('siteLuana');
 
-    return new Response(JSON.stringify({ message: 'Subscription adicionada com sucesso!' }), {
+    // Salva a subscription do usuário
+    await db.collection('subscriptions').updateOne(
+        { uuid },
+        { $set: { subscription } },
+        { upsert: true }
+    );
+
+    return new Response(JSON.stringify({ message: 'Subscription salva no MongoDB!' }), {
         status: 201,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
     });
 }
-
-export { subscriptions }; // exporta para usar na rota de envio
