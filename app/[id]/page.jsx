@@ -15,24 +15,39 @@ export default function Page() {
     const [pagesIndex, setPagesIndex] = useState(0);
 
     const pages = [
-        { name: "Mural", component: <Mural uuid={uuid} enviarNotificacao={enviarNotificacao} index={pagesIndex}/> },
-        { name: "Interagir", component: <Interacoes uuid={uuid} enviarNotificacao={enviarNotificacao}/> },
-        { name: "Galeria", component: <Galeria/> },
+        { name: "Mural", component: <Mural uuid={uuid} enviarNotificacao={enviarNotificacao} index={pagesIndex} /> },
+        { name: "Interagir", component: <Interacoes uuid={uuid} enviarNotificacao={enviarNotificacao} /> },
+        { name: "Galeria", component: <Galeria /> },
     ];
 
-    async function enviarNotificacao(uuid, titulo, mensagem) {
-        const response = await fetch('/api/send-notification', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                uuid,
-                title: titulo,
-                body: mensagem
-            })
-        });
+    async function enviarNotificacao(uuid, titulo, mensagem, type = "card") {
+        if (type == "card") {
+            const response = await fetch('/api/send-notification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uuid,
+                    title: titulo,
+                    body: mensagem
+                })
+            });
 
-        const data = await response.json();
-        console.log(data);
+            const data = await response.json();
+            console.log(data);
+        } else {
+            const response = await fetch('/api/send-notification-saudade', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uuid,
+                    title: titulo,
+                    body: mensagem
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }
     }
 
     useEffect(() => {
@@ -154,9 +169,8 @@ export default function Page() {
                             key={i}
                             variant="ghost"
                             onClick={() => setPagesIndex(i)}
-                            className={`px-6 py-2 rounded-xl font-medium transition-all duration-200 hover:shadow-sm ${
-                                pagesIndex === i ? "bg-slate-200 text-slate-900" : "text-slate-700 hover:bg-slate-100"
-                            }`}
+                            className={`px-6 py-2 rounded-xl font-medium transition-all duration-200 hover:shadow-sm ${pagesIndex === i ? "bg-slate-200 text-slate-900" : "text-slate-700 hover:bg-slate-100"
+                                }`}
                         >
                             {p.name}
                         </Button>
