@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Mural from "@/app/components/mural";
 import { useEffect, useState } from "react";
 import Galeria from "@/app/components/galeria";
+import Interacoes from "@/app/components/interacoes";
 
 export default function Page() {
     const params = useParams();
@@ -15,7 +16,7 @@ export default function Page() {
 
     const pages = [
         { name: "Mural", component: <Mural uuid={uuid} enviarNotificacao={enviarNotificacao} index={pagesIndex}/> },
-        { name: "Interagir", component: <div>Interagir</div> },
+        { name: "Interagir", component: <Interacoes uuid={uuid} enviarNotificacao={enviarNotificacao}/> },
         { name: "Galeria", component: <Galeria/> },
     ];
 
