@@ -10,7 +10,7 @@ export default function Interacoes({ uuid, enviarNotificacao }) {
         enviarNotificacao(uuid, "Esta com saudes de voce", ``, 'https://site-luana-eight.vercel.app')
     }
     return ( 
-        <div className="min-h-screen bg-background p-6 z-50">
+        <div className="min-h-screen p-6 z-50">
             <div className="max-w-5xl mx-auto space-y-8 py-8">
                 <div className="text-center space-y-6">
                     <div className="flex items-center justify-center space-x-3">
