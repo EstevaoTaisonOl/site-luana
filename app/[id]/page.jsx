@@ -21,6 +21,8 @@ export default function Page() {
     ];
 
     async function enviarNotificacao(uuid, titulo, mensagem, type = "card") {
+        console.log("Enviando notificação...");
+        console.log(type)
         if (type == "card") {
             const response = await fetch('/api/send-notification', {
                 method: 'POST',

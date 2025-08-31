@@ -80,7 +80,7 @@ export default function Mural({ uuid, enviarNotificacao, index}) {
                 throw new Error(data.error || 'Erro ao criar cartão');
             }
 
-            enviarNotificacao(uuid, "Novo Cartão de Amor!", ``, 'https://site-luana-eight.vercel.app')
+            enviarNotificacao(uuid, "Novo Cartão de Amor!", ``, 'card')
         } catch (error) {
             console.error("Erro ao criar cartão:", error);
         }

@@ -15,7 +15,7 @@ export default function Interacoes({ uuid, enviarNotificacao }) {
             uuid,
             "Está com saudades de você",
             ``,
-            "https://site-luana-eight.vercel.app"
+            "saudade"
         );
         try {
             let response = await fetch("/api/users/saudades", {
