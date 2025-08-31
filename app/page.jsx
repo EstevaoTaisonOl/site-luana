@@ -37,7 +37,14 @@ export default function AuthPage() {
           const res = await fetch(`/api/users/token/${token}`);
           const data = await res.json();
           console.log("Usuário autenticado com UUID:", data.uuid);
+          const res2 = await fetch(`/api/users/${data.uuid}`);
+          const data2 = await res2.json();
+          if (data2.error) {
+            return;
+          }
           window.location.href = `/${data.uuid}`;
+
+
 
         } catch (err) {
           console.error("Erro ao validar token:", err);
