@@ -71,7 +71,6 @@ export default function AuthPage() {
         body: JSON.stringify({ name, password, confirmPassword }),
       })
       const data = await response.json()
-      alert(data)
       console.log(data)
       if (response.ok) {
         setModal(true)
@@ -99,7 +98,6 @@ export default function AuthPage() {
         body: JSON.stringify({ name, password }),
       })
       const data = await response.json()
-      alert(data.message || data.error)
       if (response.ok) {
         setModal(true)
         localStorage.setItem("token", data.token)

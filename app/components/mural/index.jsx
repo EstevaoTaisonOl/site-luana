@@ -349,7 +349,7 @@ export default function Mural({ uuid, enviarNotificacao, index }) {
                     ))
                 }
             </div>
-            {cards.length == 0 && (
+            {cards.length == 0 && !isCreating && (
                 <div className="flex flex-col items-center justify-center mt-20 text-center px-4 z-100">
                     <Heart className="w-12 h-12 text-pink-500 mb-4 animate-pulse" />
                     <h2 className="text-2xl font-bold mb-2">Nenhum cartão de amor ainda!</h2>
