@@ -158,7 +158,7 @@ export default function Mural({ uuid, enviarNotificacao, index }) {
 
     return (
         <>
-            <div className="fixed top-24 right-6 z-50">
+            <div className="fixed top-24 right-6">
                 <Button
                     onClick={() => setIsCreating(true)}
                     className="rounded-full w-14 h-14 bg-pink-500 hover:bg-pink-600 shadow-lg"
@@ -350,7 +350,7 @@ export default function Mural({ uuid, enviarNotificacao, index }) {
                 }
             </div>
             {cards.length == 0 && (
-                <div className="flex flex-col items-center justify-center mt-20 text-center px-4">
+                <div className="flex flex-col items-center justify-center mt-20 text-center px-4 z-100">
                     <Heart className="w-12 h-12 text-pink-500 mb-4 animate-pulse" />
                     <h2 className="text-2xl font-bold mb-2">Nenhum cartão de amor ainda!</h2>
                     <p className="text-gray-600">Seja o primeiro a criar um cartão e espalhar amor! 💕</p>
