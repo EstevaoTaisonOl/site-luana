@@ -17,7 +17,7 @@ export default function Page() {
     const pages = [
         { name: "Mural", component: <Mural uuid={uuid} enviarNotificacao={enviarNotificacao} index={pagesIndex} /> },
         { name: "Interagir", component: <Interacoes uuid={uuid} enviarNotificacao={enviarNotificacao} /> },
-        { name: "Galeria", component: <Galeria /> },
+        //{ name: "Galeria", component: <Galeria /> },
     ];
 
     async function enviarNotificacao(uuid, titulo, mensagem, type = "card") {

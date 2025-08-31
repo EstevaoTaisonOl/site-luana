@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Palette, Square, Type } from "lucide-react"; // ou de onde for seu ícone
 import Card from "@/app/components/card";
 
-export default function Mural({ uuid, enviarNotificacao, index}) {
+export default function Mural({ uuid, enviarNotificacao, index }) {
     const [isCreating, setIsCreating] = useState(false)
     const [selectedColor, setSelectedColor] = useState("bg-pink-200")
     const [selectedSize, setSelectedSize] = useState("large")
@@ -349,6 +349,14 @@ export default function Mural({ uuid, enviarNotificacao, index}) {
                     ))
                 }
             </div>
+            {cards.length == 0 && (
+                <div className="flex flex-col items-center justify-center mt-20 text-center px-4">
+                    <Heart className="w-12 h-12 text-pink-500 mb-4 animate-pulse" />
+                    <h2 className="text-2xl font-bold mb-2">Nenhum cartão de amor ainda!</h2>
+                    <p className="text-gray-600">Seja o primeiro a criar um cartão e espalhar amor! 💕</p>
+                </div>
+            )
+            }
         </>
     );
 }
