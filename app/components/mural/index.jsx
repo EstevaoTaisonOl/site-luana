@@ -158,7 +158,7 @@ export default function Mural({ uuid, enviarNotificacao, index }) {
 
     return (
         <>
-            <div className="fixed top-24 right-6 z-20">
+            <div className="fixed top-24 right-6 z-50">
                 <Button
                     onClick={() => setIsCreating(true)}
                     className="rounded-full w-14 h-14 bg-pink-500 hover:bg-pink-600 shadow-lg"

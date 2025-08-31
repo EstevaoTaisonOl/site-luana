@@ -140,7 +140,7 @@ export default function Page() {
     }, []);
 
     return (
-        <div className="flex flex-col items-center h-screen">
+        <div className="flex flex-col items-center h-screen ">
             {/* Polaroids */}
             <div>
                 <div className="polaroid polaroid-scattered top-10 left-10 w-35 h-45 floating" style={{ "--rotation": "-15deg" }}>
